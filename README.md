@@ -40,3 +40,13 @@ The API will run on `http://localhost:5000` by default.
 - `GET /api/stats/distance/stops/:id1/:id2` – distance between two stops (auth required)
 - `GET /api/stats/distance/lines/:id` – total distance of a line (auth required)
 
+
+## Frontend
+A basic React application is available in the `frontend` directory.
+To start it in development mode run:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The app expects the API to be running on `http://localhost:5000`.
