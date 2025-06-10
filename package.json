@@ -1,0 +1,33 @@
+{
+  "name": "express-tissea",
+  "version": "1.0.0",
+  "description": "API REST permettant d'accéder aux informations du réseau de transport TISSÉA (bus, métro, tram).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "dev": "nodemon app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otsubyo/express-tissea.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/otsubyo/express-tissea/issues"
+  },
+  "homepage": "https://github.com/otsubyo/express-tissea#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
