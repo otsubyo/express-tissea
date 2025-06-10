@@ -1,7 +1,7 @@
 const Line = require('../models/line');
 const Stop = require('../models/stop');
 const Category = require('../models/category');
-const { calculateDistance } = require('../utils/geoUtils');
+const { calculateDistance, distanceBetweenStops } = require('../utils/geoUtils');
 
 // Get line details
 exports.getLine = async (req, res) => {
@@ -113,6 +113,94 @@ exports.calculateLineDistance = async (req, res) => {
     }
     
     res.json({ distance: totalDistance, unit: 'km' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+// Update line details
+exports.updateLine = async (req, res) => {
+  try {
+    const updatedLine = await Line.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedLine) {
+      return res.status(404).json({ message: 'Line not found' });
+    }
+
+    res.json(updatedLine);
+  } catch (err) {
+    res.status(400).json({ message: 'Error updating line', error: err.message });
+  }
+};
+
+// Remove stop from line
+exports.removeStopFromLine = async (req, res) => {
+  try {
+    const line = await Line.findById(req.params.id);
+    if (!line) {
+      return res.status(404).json({ message: 'Line not found' });
+    }
+
+    const stopIndex = line.stops.findIndex(
+      s => s.stop.toString() === req.params.stopId
+    );
+
+    if (stopIndex === -1) {
+      return res.status(404).json({ message: 'Stop not found in line' });
+    }
+
+    const removedOrder = line.stops[stopIndex].order;
+    line.stops.splice(stopIndex, 1);
+    line.stops.forEach(s => {
+      if (s.order > removedOrder) s.order -= 1;
+    });
+
+    await line.save();
+
+    res.json({ message: 'Stop removed from line successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+// Distance between two stops
+exports.distanceBetweenStops = async (req, res) => {
+  try {
+    const stop1 = await Stop.findById(req.params.id1);
+    const stop2 = await Stop.findById(req.params.id2);
+
+    if (!stop1 || !stop2) {
+      return res.status(404).json({ message: 'Stop not found' });
+    }
+
+    const distance = distanceBetweenStops(stop1, stop2);
+    res.json({ distance, unit: 'km' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+// Total distance of a line
+exports.distanceOfLine = async (req, res) => {
+  try {
+    const line = await Line.findById(req.params.id).populate('stops.stop', 'location');
+
+    if (!line || line.stops.length < 2) {
+      return res.status(400).json({ message: 'Line has insufficient stops' });
+    }
+
+    let total = 0;
+    for (let i = 0; i < line.stops.length - 1; i++) {
+      const s1 = line.stops[i].stop;
+      const s2 = line.stops[i + 1].stop;
+      total += distanceBetweenStops(s1, s2);
+    }
+
+    res.json({ distance: total, unit: 'km' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
