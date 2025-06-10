@@ -20,4 +20,4 @@ app.use('/api/lines', lineRoutes); // line routes have auth inside
 app.use('/api/stats', statsRoutes); // stats routes have auth inside
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
