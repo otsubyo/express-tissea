@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './Home.css'
 
 function Home() {
   const [categories, setCategories] = useState([])
   const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -13,12 +14,17 @@ function Home() {
     })
       .then(res => res.ok ? res.json() : Promise.reject('Erreur serveur'))
       .then(setCategories)
-      .catch(setError('Erreur de chargement des catégories'))
+      .catch(() => setError('Erreur de chargement des catégories'))
   }, [])
 
   return (
     <div className="home-page">
-      <h1>Bienvenue sur TissÉa</h1>
+      <div className="top-buttons">
+        <button onClick={() => navigate('/login')}>Connexion</button>
+        <button onClick={() => navigate('/signup')}>Inscription</button>
+      </div>
+
+      <h1>Bienvenue sur Tisséa</h1>
       <h2>Catégories de transport</h2>
       {error && <p className="error-message">{error}</p>}
       <ul className="categories-list">

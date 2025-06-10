@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './Login.css' // On réutilise le CSS de login pour rester cohérent
+import './Login.css' 
 
 function Signup() {
   const [username, setUsername] = useState('')

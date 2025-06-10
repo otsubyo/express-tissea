@@ -7,6 +7,28 @@
   min-height: 100vh;
 }
 
+.top-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.top-buttons button {
+  padding: 0.5rem 1rem;
+  background-color: #00bfff;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-buttons button:hover {
+  background-color: #009ad6;
+}
+
 .home-page h1 {
   text-align: center;
   font-size: 2.5rem;
@@ -47,4 +69,10 @@
   text-decoration: none;
   color: #00bfff;
   font-size: 1.1rem;
+}
+
+.error-message {
+  text-align: center;
+  color: #ff6b6b;
+  margin-top: 1rem;
 }

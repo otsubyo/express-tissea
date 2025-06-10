@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "seed": "node seed.js",
-    "test": "echo \"No tests yet\""
+    "test": "vitest"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -17,5 +17,9 @@
     "haversine-distance": "^1.2.3",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.1",
+    "vitest": "^3.2.3"
   }
 }

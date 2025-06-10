@@ -11,30 +11,33 @@ const authMiddleware = require('./app/middlewares/authMiddleware');
 
 dotenv.config();
 
-async function startServer() {
-  await connectDB();
+const app = express();
 
-  const app = express();
+// Middleware CORS
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
-  // Middleware CORS
-  app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-  }));
+// Middleware pour parser le JSON
+app.use(express.json());
 
-  // Middleware pour parser le JSON
-  app.use(express.json());
+// Routes
+app.use('/api/users', authRoutes); // signup & login
+app.use('/api/categories', authMiddleware, categoryRoutes);
+app.use('/api/lines', lineRoutes); // auth inclus dans les routes
+app.use('/api/stats', statsRoutes); // auth inclus dans les routes
 
-  // Routes
-  app.use('/api/users', authRoutes); // signup & login
-  app.use('/api/categories', authMiddleware, categoryRoutes);
-  app.use('/api/lines', lineRoutes); // line routes have auth inside
-  app.use('/api/stats', statsRoutes); // stats routes have auth inside
-
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Connexion à la DB + lancement du serveur si on n'est pas en test
+if (process.env.NODE_ENV !== 'test') {
+  connectDB().then(() => {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }).catch(err => {
+    console.error('Failed to connect to DB:', err);
+  });
 }
 
-startServer().catch(err => {
-  console.error('Failed to start server:', err);
-});
+module.exports = app;
