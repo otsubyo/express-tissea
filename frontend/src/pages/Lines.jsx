@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import './Lines.css'
 
 function Lines() {
   const { id } = useParams()
@@ -20,10 +21,10 @@ function Lines() {
   }, [id])
 
   return (
-    <div>
+    <div className="lines-page">
       <h2>Lines</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
+      {error && <p className="error-message">{error}</p>}
+      <ul className="lines-list">
         {lines.map(line => (
           <li key={line._id}>{line.name}</li>
         ))}

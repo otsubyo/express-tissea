@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./app/config/db');
 
 const authRoutes = require('./app/routes/auth');
@@ -14,8 +15,17 @@ async function startServer() {
   await connectDB();
 
   const app = express();
+
+  // Middleware CORS
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  }));
+
+  // Middleware pour parser le JSON
   app.use(express.json());
 
+  // Routes
   app.use('/api/users', authRoutes); // signup & login
   app.use('/api/categories', authMiddleware, categoryRoutes);
   app.use('/api/lines', lineRoutes); // line routes have auth inside

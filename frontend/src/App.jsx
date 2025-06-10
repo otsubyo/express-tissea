@@ -1,19 +1,19 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/Login.jsx'
-import Categories from './pages/Categories.jsx'
-import Lines from './pages/Lines.jsx'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import Categories from './pages/Categories'
+import Lines from './pages/Lines'
 
 function App() {
-  const token = localStorage.getItem('token')
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/categories/:id" element={token ? <Lines /> : <Navigate to="/login" />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} /> 
+      <Route path="/categories" element={<Categories />} />
+      <Route path="/categories/:id" element={<Lines />} />
+    </Routes>
   )
 }
 

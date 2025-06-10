@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import './Login.css'
+import { useNavigate } from 'react-router-dom'
+import './Login.css' // On réutilise le CSS de login pour rester cohérent
 
-function Login() {
+function Signup() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -12,15 +12,13 @@ function Login() {
     e.preventDefault()
     setError('')
     try {
-      const res = await fetch('http://localhost:5000/api/users/login', {
+      const res = await fetch('http://localhost:5000/api/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       })
-      if (!res.ok) throw new Error('Login failed')
-      const data = await res.json()
-      localStorage.setItem('token', data.token)
-      navigate('/')
+      if (!res.ok) throw new Error('Signup failed')
+      navigate('/login')
     } catch (err) {
       setError(err.message)
     }
@@ -28,26 +26,23 @@ function Login() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
+      <h2>Inscription</h2>
       <input
         type="text"
-        placeholder="Username"
+        placeholder="Nom d'utilisateur"
         value={username}
         onChange={e => setUsername(e.target.value)}
       />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Mot de passe"
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
-      <button type="submit">Login</button>
+      <button type="submit">Créer un compte</button>
       {error && <p className="error-message">{error}</p>}
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        Pas encore de compte ? <Link to="/signup" style={{ color: '#00bfff' }}>Inscription</Link>
-      </p>
     </form>
   )
 }
 
-export default Login
+export default Signup
