@@ -1,12 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const lineController = require('../controllers/lineController');
-const auth = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-router.get('/:id', auth, lineController.getLine);
-router.get('/:id/stops', auth, lineController.getStops);
-router.post('/:id/stops', auth, lineController.addStop);
-router.put('/:id', auth, lineController.updateLine);
-router.delete('/:id/stops/:stopId', auth, lineController.deleteStop);
+// Protect all routes
+router.use(authMiddleware);
+
+// GET /api/lines/:id - Get line details
+router.get('/:id', lineController.getLine);
+
+// GET /api/lines/:id/stops - Get line stops
+router.get('/:id/stops', lineController.getLineStops);
+
+// POST /api/lines/:id/stops - Add stop to line
+router.post('/:id/stops', lineController.addStopToLine);
+
+// PUT /api/lines/:id - Update line
+router.put('/:id', lineController.updateLine);
+
+// DELETE /api/lines/:id/stops/:stopId - Remove stop from line
+router.delete('/:id/stops/:stopId', lineController.removeStopFromLine);
 
 module.exports = router;
