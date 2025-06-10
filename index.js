@@ -9,15 +9,22 @@ const statsRoutes = require('./app/routes/stats');
 const authMiddleware = require('./app/middlewares/authMiddleware');
 
 dotenv.config();
-connectDB();
 
-const app = express();
-app.use(express.json());
+async function startServer() {
+  await connectDB();
 
-app.use('/api/users', authRoutes); // signup & login
-app.use('/api/categories', authMiddleware, categoryRoutes);
-app.use('/api/lines', lineRoutes); // line routes have auth inside
-app.use('/api/stats', statsRoutes); // stats routes have auth inside
+  const app = express();
+  app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.use('/api/users', authRoutes); // signup & login
+  app.use('/api/categories', authMiddleware, categoryRoutes);
+  app.use('/api/lines', lineRoutes); // line routes have auth inside
+  app.use('/api/stats', statsRoutes); // stats routes have auth inside
+
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+startServer().catch(err => {
+  console.error('Failed to start server:', err);
+});
