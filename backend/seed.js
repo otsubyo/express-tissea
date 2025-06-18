@@ -41,10 +41,10 @@ const seed = async () => {
       ],
     });
 
-    console.log('✅ Seed complete');
+    console.log('Seed complete');
     process.exit();
   } catch (err) {
-    console.error('❌ Seed error:', err);
+    console.error('Seed error:', err);
     process.exit(1);
   }
 };
