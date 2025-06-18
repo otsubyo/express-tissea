@@ -23,8 +23,9 @@ Un mini-frontend permet de visualiser les lignes sur une carte interactive avec 
 ---
 ## Structure du projet
 ---
+```
 express-tissea/
-├── backend/
+├── backend/t
 │   ├── controllers/
 │   ├── generated/
 │   ├── middlewares/
