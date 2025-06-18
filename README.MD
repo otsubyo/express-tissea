@@ -20,9 +20,8 @@ Un mini-frontend permet de visualiser les lignes sur une carte interactive avec 
 - **Leaflet** (affichage de cartes)
 - **CSS** (charte graphique bleu / noir)
 
----
 ## Structure du projet
-```
+
 express-tissea/
 ├── backend/
 │   ├── controllers/
