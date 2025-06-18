@@ -76,13 +76,19 @@ cd ../frontend
 npm install
 ```
 
-### 2. Lancer l'API
+### 2. alimentation de la base de données
+```bash
+cd backend
+node seed.js
+```
+
+### 3. Lancer l'API
 ```bash
 cd backend
 npm run dev
 ```
 
-### 3. Lancer le frontend
+### 4. Lancer le frontend
 ```bash
 cd frontend
 npm run dev
