@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique
+  lines Line[]
+}
+
+model Stop {
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  lat  Float
+  lng  Float
+}
+
+model Line {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  category   Category   @relation(fields: [categoryId], references: [id])
+  categoryId String     @db.ObjectId
+  createdAt  DateTime   @default(now())
+  startTime  String
+  endTime    String
+  stops      StopEntry[]
+}
+
+type StopEntry {
+  stopId String @db.ObjectId
+  order  Int
+}

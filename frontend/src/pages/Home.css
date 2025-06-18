@@ -1,0 +1,136 @@
+body {
+  margin: 0;
+  background-color: #121212;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0.5rem 0;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  color: #1e90ff;
+}
+
+p {
+  font-size: 1.1rem;
+  color: #cccccc;
+}
+
+.error-message {
+  color: #ff4d4d;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.button {
+  padding: 0.8rem 2rem;
+  background-color: #1e90ff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0f75d3;
+}
+
+.category-list,
+.line-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.item-button {
+  padding: 0.6rem 1.2rem;
+  background-color: #1e90ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.item-button:hover {
+  background-color: #0f75d3;
+}
+
+.stop-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  color: #dddddd;
+  text-align: left;
+  max-width: 500px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stop-list li {
+  padding: 0.6rem;
+  border-bottom: 1px solid #333;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  color: #777;
+}
+
+.user-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  background: #0f75d3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button {
+  margin-left: 1rem;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
