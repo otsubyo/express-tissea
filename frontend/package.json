@@ -1,0 +1,19 @@
+{
+  "name": "tissea-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.x",
+    "react-dom": "^18.x",
+    "react-router-dom": "^6.x",
+    "react-leaflet": "^4.x",
+    "leaflet": "^1.9.x"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
