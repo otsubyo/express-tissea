@@ -25,9 +25,10 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         navigate('/map');
       } else {
-        setError(data.message || 'Erreur');
+        setError(data.message || 'Identifiants invalides');
       }
     } catch (err) {
+      console.error(err);
       setError('Erreur de connexion au serveur');
     }
   };
@@ -40,14 +41,14 @@ const Login = () => {
           type="email"
           placeholder="Adresse email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
         />
         <input
           type="password"
           placeholder="Mot de passe"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           required
         />
         <button type="submit">Se connecter</button>

@@ -143,3 +143,13 @@ export const deleteStopFromLine = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getAllLines = async (req, res) => {
+  try {
+    const lines = await Line.find({}, '_id name');
+    res.json(lines);
+  } catch (err) {
+    console.error('Erreur getAllLines :', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};

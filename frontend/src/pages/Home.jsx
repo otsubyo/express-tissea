@@ -9,6 +9,23 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
   const [error, setError] = useState("");
+  const [userEmail, setUserEmail] = useState(null);
+
+  // Charge l'email depuis le JWT (import dynamique pour éviter tout plantage)
+  useEffect(() => {
+    (async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      try {
+        const jwtModule = await import("jwt-decode");
+        const decoded = jwtModule.default(token);
+        setUserEmail(decoded.email ?? null);
+      } catch (e) {
+        console.warn("Impossible de décoder le token:", e);
+        setUserEmail(null);
+      }
+    })();
+  }, []);
 
   // Helper pour fetch et parse JSON
   const fetchJson = async (url, options = {}) => {
@@ -35,14 +52,16 @@ const Home = () => {
     })();
   }, []);
 
-  // Sur clic catégorie → récupère lignes
+  // Récupère les lignes d’une catégorie
   const handleCategoryClick = async (id) => {
     setError("");
     setSelectedCategory(id);
     setSelectedLine(null);
     setStops([]);
     try {
-      const data = await fetchJson(`http://localhost:4000/api/categories/${id}/lines`);
+      const data = await fetchJson(
+        `http://localhost:4000/api/categories/${id}/lines`
+      );
       setLines(data);
     } catch (err) {
       console.error(err);
@@ -50,7 +69,7 @@ const Home = () => {
     }
   };
 
-  // Sur clic ligne → récupère arrêts (protégé, on ajoute le token)
+  // Récupère les arrêts d’une ligne (protégé)
   const handleLineClick = async (id) => {
     setError("");
     setSelectedLine(id);
@@ -72,8 +91,11 @@ const Home = () => {
       setStops(data);
     } catch (err) {
       console.error(err);
-      // si 401, afficher message adapté
-      if (err.message.includes("401")) {
+      if (err.message.includes("403")) {
+        localStorage.removeItem("token");
+        setUserEmail(null);
+        setError("Session expirée, veuillez vous reconnecter.");
+      } else if (err.message.includes("401")) {
         setError("Non autorisé : veuillez vous connecter.");
       } else {
         setError(err.message);
@@ -81,8 +103,20 @@ const Home = () => {
     }
   };
 
+  // Vérifie si on est connecté
+  const isAuthenticated = !!userEmail;
+
   return (
     <div className="home-container">
+      {/* Indicateur utilisateur */}
+      <div className="user-info">
+        {isAuthenticated ? (
+          <span>👤 Connecté : <strong>{userEmail}</strong></span>
+        ) : (
+          <span>🔒 Non connecté</span>
+        )}
+      </div>
+
       <header>
         <img src="/logo-tissea.png" alt="Logo Tisséa" className="logo" />
         <h1>Bienvenue sur Tisséa</h1>
@@ -92,14 +126,16 @@ const Home = () => {
       <main>
         <div className="button-group">
           <Link to="/signup" className="button">Créer un compte</Link>
-          <Link to="/login" className="button">Se connecter</Link>
+          {!isAuthenticated && (
+            <Link to="/login" className="button">Se connecter</Link>
+          )}
         </div>
 
         {error && <p className="error-message">{error}</p>}
 
         <h2>Catégories de transport</h2>
         <div className="category-list">
-          {categories.map(cat => (
+          {categories.map((cat) => (
             <button
               key={cat._id}
               className="item-button"
@@ -114,7 +150,7 @@ const Home = () => {
           <>
             <h2>Lignes</h2>
             <div className="line-list">
-              {lines.map(line => (
+              {lines.map((line) => (
                 <button
                   key={line._id}
                   className="item-button"
