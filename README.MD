@@ -1,47 +1,42 @@
 
 ---
 
-## 🗂 Structure du projet
+## Structure du projet
 ```
 express-tissea/
-├── backend/            
-│   ├── models/         
-│   ├── controllers/   
-│   ├── routes/         
-│   ├── server.js       
-│   └── .env            
-├── index.html
-├── package.json
-├── vite.config.js
-└── src/
-    ├── App.jsx
-    ├── index.js
-    ├── index.css
-    └── pages/
-        ├── Home.jsx
-        ├── Signup.jsx
-        ├── Login.jsx
-        └── MapView.jsx
-├──frontend/
-├── index.html
-├── package.json
-├── vite.config.js
-└── src/
-    ├── App.jsx
-    ├── index.js
-    ├── index.css
-    └── pages/
-        ├── Home.jsx
-        ├── Signup.jsx
-        ├── Login.jsx
-        └── MapView.jsx
+├── backend/
+│   ├── controllers/
+│   ├── generated/
+│   ├── middlewares/
+│   ├── models/
+│   ├── prisma/
+│   ├── routes/
+│   ├── .env
+│   ├── app.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── seed.js
+│   └── server.js
 
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.mjs
+
+└── prisma/
 └── README.md
+└── .gitignore
 ```
 
 ---
 
-## ⚙️ Lancer le projet
+## Lancer le projet
 
 ### Prérequis :
 - Node.js >= 18
@@ -69,7 +64,7 @@ npm run dev
 
 ---
 
-## 🔐 Authentification
+## Authentification
 - `/api/users/signup` : créer un compte
 - `/api/users/login` : obtention d'un token JWT
 
@@ -80,7 +75,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 🧭 Fonctionnalités principales
+## Fonctionnalités principales
 ### Backend (Express)
 - CRUD des lignes, arrêts, catégories
 - Calcul de distances entre arrêts / lignes
@@ -93,7 +88,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 🧪 Schéma de base de données
+## Schéma de base de données
 Modélisation MongoDB via Prisma ou Mongoose avec 5 entités :
 - User
 - Category (bus / tram / metro)
@@ -103,12 +98,12 @@ Modélisation MongoDB via Prisma ou Mongoose avec 5 entités :
 
 ---
 
-## 🗺 Carte Leaflet
+## Carte Leaflet
 Accessible via `/map` (connexion requise). Affiche toutes les lignes disponibles avec leurs arrêts géolocalisés.
 
 ---
 
-## 👤 Auteur
+## Auteur
 - Nom : Premi
 - Prénom : Carl
 - Projet : Tisséa - Soutenance 2025
