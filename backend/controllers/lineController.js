@@ -117,3 +117,29 @@ export const updateLine = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const deleteStopFromLine = async (req, res) => {
+  try {
+    const { lineId, stopId } = req.params;
+    const line = await Line.findById(lineId);
+
+    if (!line) return res.status(404).json({ message: 'Line not found' });
+
+    const index = line.stops.findIndex(s => s.stopId.toString() === stopId);
+    if (index === -1) return res.status(404).json({ message: 'Stop not found in line' });
+
+    // Supprimer l'arrêt
+    line.stops.splice(index, 1);
+
+    // Réajuster les ordres
+    line.stops = line.stops
+      .sort((a, b) => a.order - b.order)
+      .map((s, i) => ({ ...s, order: i + 1 }));
+
+    await line.save();
+
+    res.json({ message: 'Stop removed from line' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
