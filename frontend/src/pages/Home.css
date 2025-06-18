@@ -115,9 +115,22 @@ footer {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #1e90ff;
+  display: flex;
+  align-items: center;
+  background: #0f75d3;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button {
+  margin-left: 1rem;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }

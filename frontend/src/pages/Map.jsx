@@ -14,7 +14,7 @@ const MapView = () => {
   useEffect(() => {
     if (!token) {
       setError("Vous devez être connecté.");
-      navigate('/login');
+      navigate('/', { replace: true });
       return;
     }
 
@@ -24,7 +24,6 @@ const MapView = () => {
         const res = await fetch('http://localhost:4000/api/lines', {
           headers: { Authorization: `Bearer ${token}` }
         });
-
         const data = await res.json();
         if (!Array.isArray(data)) throw new Error("Données lignes invalides.");
         setLines(data);
@@ -38,15 +37,15 @@ const MapView = () => {
   }, [navigate, token]);
 
   const fetchStopsForLine = async (lineId) => {
+    setStops([]);
+    setError("");
     try {
       const res = await fetch(`http://localhost:4000/api/lines/${lineId}/stops`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Données arrêts invalides.");
       setStops(data);
-      setError("");
     } catch (err) {
       setStops([]);
       setError("Erreur lors du chargement des arrêts.");
@@ -56,7 +55,7 @@ const MapView = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    navigate('/', { replace: true });
   };
 
   const handleHome = () => {
@@ -89,7 +88,12 @@ const MapView = () => {
         <Polyline positions={lineCoordinates} pathOptions={{ color: 'blue' }} />
         {stops.map((s, idx) => (
           <Marker key={idx} position={[s.lat, s.lng]}>
-            <Popup>{s.name}</Popup>
+            <Popup>
+              <div>
+                {s.name}<br/>
+                Ordre : {s.order}
+              </div>
+            </Popup>
           </Marker>
         ))}
       </MapContainer>

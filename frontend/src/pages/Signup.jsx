@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Signup.css";
 
 const Signup = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -15,11 +15,16 @@ const Signup = () => {
     e.preventDefault();
     setError("");
 
+    if (form.password !== form.confirmPassword) {
+      setError("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:4000/api/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
       if (!response.ok) {
@@ -53,6 +58,14 @@ const Signup = () => {
               name="password"
               placeholder="Mot de passe"
               value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirmer le mot de passe"
+              value={form.confirmPassword}
               onChange={handleChange}
               required
             />

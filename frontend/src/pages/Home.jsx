@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
@@ -9,25 +9,17 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedLine, setSelectedLine] = useState(null);
   const [error, setError] = useState("");
-  const [userEmail, setUserEmail] = useState(null);
+  const navigate = useNavigate();
 
-  // Charge l'email depuis le JWT (import dynamique pour éviter tout plantage)
-  useEffect(() => {
-    (async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-      try {
-        const jwtModule = await import("jwt-decode");
-        const decoded = jwtModule.default(token);
-        setUserEmail(decoded.email ?? null);
-      } catch (e) {
-        console.warn("Impossible de décoder le token:", e);
-        setUserEmail(null);
-      }
-    })();
-  }, []);
+  // On se base sur la présence d'un token pour savoir si on est connecté
+  const token = localStorage.getItem("token");
+  const isAuthenticated = !!token;
 
-  // Helper pour fetch et parse JSON
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/", { replace: true });
+  };
+
   const fetchJson = async (url, options = {}) => {
     const res = await fetch(url, options);
     if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
@@ -39,7 +31,6 @@ const Home = () => {
     return res.json();
   };
 
-  // Charge les catégories (non protégées)
   useEffect(() => {
     (async () => {
       try {
@@ -52,7 +43,6 @@ const Home = () => {
     })();
   }, []);
 
-  // Récupère les lignes d’une catégorie
   const handleCategoryClick = async (id) => {
     setError("");
     setSelectedCategory(id);
@@ -69,11 +59,9 @@ const Home = () => {
     }
   };
 
-  // Récupère les arrêts d’une ligne (protégé)
   const handleLineClick = async (id) => {
     setError("");
     setSelectedLine(id);
-    const token = localStorage.getItem("token");
     if (!token) {
       setError("Vous devez être connecté pour voir les arrêts.");
       return;
@@ -92,28 +80,26 @@ const Home = () => {
     } catch (err) {
       console.error(err);
       if (err.message.includes("403")) {
-        localStorage.removeItem("token");
-        setUserEmail(null);
-        setError("Session expirée, veuillez vous reconnecter.");
-      } else if (err.message.includes("401")) {
-        setError("Non autorisé : veuillez vous connecter.");
+        handleLogout();
       } else {
         setError(err.message);
       }
     }
   };
 
-  // Vérifie si on est connecté
-  const isAuthenticated = !!userEmail;
-
   return (
     <div className="home-container">
-      {/* Indicateur utilisateur */}
+      {/* Indicateur de connexion + bouton Se déconnecter */}
       <div className="user-info">
         {isAuthenticated ? (
-          <span>👤 Connecté : <strong>{userEmail}</strong></span>
+          <>
+            <span>Connecté</span>
+            <button onClick={handleLogout} className="logout-button">
+              Se déconnecter
+            </button>
+          </>
         ) : (
-          <span>🔒 Non connecté</span>
+          <span>Non connecté</span>
         )}
       </div>
 
@@ -125,9 +111,14 @@ const Home = () => {
 
       <main>
         <div className="button-group">
-          <Link to="/signup" className="button">Créer un compte</Link>
           {!isAuthenticated && (
-            <Link to="/login" className="button">Se connecter</Link>
+            <>
+              <Link to="/signup" className="button">Créer un compte</Link>
+              <Link to="/login" className="button">Se connecter</Link>
+            </>
+          )}
+          {isAuthenticated && (
+            <Link to="/map" className="button">Carte</Link>
           )}
         </div>
 
