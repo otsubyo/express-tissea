@@ -4,18 +4,25 @@
 ## 🗂 Structure du projet
 ```
 express-tissea/
-├── backend/            # API Express
-│   ├── models/         # Schémas Mongoose
-│   ├── controllers/    # Logique des endpoints
-│   ├── routes/         # Fichiers de routing
-│   ├── server.js       # Point d’entrée backend
-│   └── .env            # Variables d’environnement
-├── frontend/           # Application React
-│   ├── src/
-│   │   ├── pages/      # Pages React (Home, Login, Signup, MapView)
-│   │   ├── App.jsx     # Routing principal
-│   │   └── index.css   # Thème bleu / noir
-│   └── package.json
+├── backend/            
+│   ├── models/         
+│   ├── controllers/   
+│   ├── routes/         
+│   ├── server.js       
+│   └── .env            
+├── index.html
+├── package.json
+├── vite.config.js
+└── src/
+    ├── App.jsx
+    ├── index.js
+    ├── index.css
+    └── pages/
+        ├── Home.jsx
+        ├── Signup.jsx
+        ├── Login.jsx
+        └── MapView.jsx
+
 └── README.md
 ```
 
@@ -44,7 +51,7 @@ npm run dev
 ### 3. Lancer le frontend
 ```bash
 cd frontend
-npm start
+npm run dev
 ```
 
 ---
