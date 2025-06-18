@@ -1,6 +1,26 @@
+# Tisséa - Réseau de Transports Publics
+
+## Objectifs du projet
+
+Le projet **Tisséa** a pour but de développer une API REST sécurisée dédiée aux transports publics (bus, métro, tramway) de type Tisséo.  
+Cette API permet de consulter les lignes et leurs arrêts, calculer des distances, et gérer des utilisateurs grâce à une authentification JWT.  
+Un mini-frontend permet de visualiser les lignes sur une carte interactive avec Leaflet.
+
+## Technologies utilisées
+
+### Backend
+- **Node.js** + **Express.js**
+- **MongoDB** (via **Prisma** ou **Mongoose**)
+- **JWT** pour l’authentification sécurisée
+- **Prisma Studio** pour visualiser la base de données
+
+### Frontend
+- **React.js**
+- **Vite**
+- **Leaflet** (affichage de cartes)
+- **CSS** (charte graphique bleu / noir)
 
 ---
-
 ## Structure du projet
 ```
 express-tissea/
