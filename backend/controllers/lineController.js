@@ -1,14 +1,13 @@
+// controllers/lineController.js
 import Line from '../models/Line.js';
 import Stop from '../models/Stop.js';
 
 export const getLineDetails = async (req, res) => {
   try {
     const { id } = req.params;
-
     const line = await Line.findById(id).lean();
     if (!line) return res.status(404).json({ message: 'Line not found' });
 
-    // Récupération des noms des arrêts dans l’ordre
     const orderedStops = await Promise.all(
       line.stops
         .sort((a, b) => a.order - b.order)
@@ -50,6 +49,70 @@ export const getLineStopsDetails = async (req, res) => {
     );
 
     res.json(detailedStops.filter(Boolean));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const addStopToLine = async (req, res) => {
+  try {
+    const { name, lat, lng } = req.body;
+    const line = await Line.findById(req.params.id).populate('stops.stopId');
+
+    if (!line) return res.status(404).json({ message: 'Line not found' });
+
+    // Vérifie si un arrêt avec les mêmes coordonnées et nom existe déjà sur cette ligne
+    const stopExists = line.stops.some(s => {
+      return (
+        s.stopId.lat === lat &&
+        s.stopId.lng === lng
+      );
+    });
+
+    if (stopExists) {
+      return res.status(400).json({ message: 'Stop already exists on this line' });
+    }
+
+    const orders = line.stops.map(s => s.order);
+    const maxOrder = orders.length > 0 ? Math.max(...orders) : 0;
+
+    const newStop = new Stop({ name, lat, lng });
+    await newStop.save();
+
+    line.stops.push({ stopId: newStop._id, order: maxOrder + 1 });
+    await line.save();
+
+    res.status(201).json({ message: 'Stop added to line', stop: newStop });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateLine = async (req, res) => {
+  try {
+    const { name, startTime, endTime } = req.body;
+    const line = await Line.findById(req.params.id);
+
+    if (!line) {
+      return res.status(404).json({ message: 'Line not found' });
+    }
+
+    const noChanges =
+      line.name === name &&
+      line.startTime === startTime &&
+      line.endTime === endTime;
+
+    if (noChanges) {
+      return res.status(400).json({ message: 'No changes detected' });
+    }
+
+    line.name = name || line.name;
+    line.startTime = startTime || line.startTime;
+    line.endTime = endTime || line.endTime;
+
+    await line.save();
+
+    res.json({ message: 'Line updated', line });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

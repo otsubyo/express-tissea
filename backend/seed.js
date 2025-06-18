@@ -39,7 +39,9 @@ const seed = async () => {
         endTime: '22:00',
         stops: [
           { stopId: stops[0]._id, order: 1 },
-          { stopId: stops[1]._id, order: 2 }
+          { stopId: stops[1]._id, order: 2 },
+          { stopId: stops[2]._id, order: 3 },
+          { stopId: stops[3]._id, order: 4 }
         ]
       },
       {
@@ -48,8 +50,9 @@ const seed = async () => {
         startTime: '05:30',
         endTime: '20:30',
         stops: [
-          { stopId: stops[2]._id, order: 1 },
-          { stopId: stops[3]._id, order: 2 }
+          { stopId: stops[1]._id, order: 1 },
+          { stopId: stops[3]._id, order: 2 },
+          { stopId: stops[4]._id, order: 3 }
         ]
       },
       {
@@ -58,16 +61,17 @@ const seed = async () => {
         startTime: '07:00',
         endTime: '23:00',
         stops: [
-          { stopId: stops[1]._id, order: 1 },
-          { stopId: stops[4]._id, order: 2 }
+          { stopId: stops[0]._id, order: 1 },
+          { stopId: stops[2]._id, order: 2 },
+          { stopId: stops[4]._id, order: 3 }
         ]
       }
     ]);
 
-    console.log('Seed complete');
+    console.log('✅ Seed complete');
     process.exit();
   } catch (err) {
-    console.error('Seed error:', err);
+    console.error('❌ Seed error:', err);
     process.exit(1);
   }
 };
