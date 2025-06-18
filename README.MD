@@ -21,6 +21,11 @@ Un mini-frontend permet de visualiser les lignes sur une carte interactive avec 
 - **CSS** (charte graphique bleu / noir)
 
 ---
+## Modèles de données
+![prisma-erd.svg](./prisma/prisma-erd.svg)
+---
+
+---
 ## Structure du projet
 ---
 ```
