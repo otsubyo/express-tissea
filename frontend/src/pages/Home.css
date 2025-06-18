@@ -23,7 +23,12 @@ body {
 h1 {
   font-size: 2.5rem;
   margin: 0.5rem 0;
-  color: #ffffff;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  color: #1e90ff;
 }
 
 p {
@@ -31,20 +36,17 @@ p {
   color: #cccccc;
 }
 
-.main-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin: 2rem 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.error-message {
+  color: #ff4d4d;
+  margin: 1rem 0;
+  font-size: 1rem;
 }
 
 .button-group {
   display: flex;
   gap: 1rem;
-  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .button {
@@ -52,13 +54,55 @@ p {
   background-color: #1e90ff;
   color: #ffffff;
   text-decoration: none;
-  font-size: 1rem;
   border-radius: 30px;
   transition: background-color 0.3s ease;
 }
 
 .button:hover {
   background-color: #0f75d3;
+}
+
+.category-list,
+.line-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.item-button {
+  padding: 0.6rem 1.2rem;
+  background-color: #1e90ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.item-button:hover {
+  background-color: #0f75d3;
+}
+
+.stop-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  color: #dddddd;
+  text-align: left;
+  max-width: 500px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stop-list li {
+  padding: 0.6rem;
+  border-bottom: 1px solid #333;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
 }
 
 footer {
