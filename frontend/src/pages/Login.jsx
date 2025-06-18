@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1>Connexion à TissÉa</h1>
+      <h1>Connexion à Tisséa</h1>
       <form onSubmit={handleLogin}>
         <input
           type="email"
