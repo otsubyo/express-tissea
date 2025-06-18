@@ -56,30 +56,41 @@ export const getLineStopsDetails = async (req, res) => {
 
 export const addStopToLine = async (req, res) => {
   try {
-    const { name, lat, lng } = req.body;
+    const { name, lat, lng, order } = req.body;
     const line = await Line.findById(req.params.id).populate('stops.stopId');
 
     if (!line) return res.status(404).json({ message: 'Line not found' });
 
-    // Vérifie si un arrêt avec les mêmes coordonnées et nom existe déjà sur cette ligne
-    const stopExists = line.stops.some(s => {
-      return (
-        s.stopId.lat === lat &&
-        s.stopId.lng === lng
-      );
-    });
+    // Vérifie s’il existe déjà un arrêt avec mêmes coordonnées
+    const stopExists = line.stops.some(s =>
+      s.stopId.lat === lat &&
+      s.stopId.lng === lng
+    );
 
     if (stopExists) {
       return res.status(400).json({ message: 'Stop already exists on this line' });
     }
 
-    const orders = line.stops.map(s => s.order);
-    const maxOrder = orders.length > 0 ? Math.max(...orders) : 0;
-
     const newStop = new Stop({ name, lat, lng });
     await newStop.save();
 
-    line.stops.push({ stopId: newStop._id, order: maxOrder + 1 });
+    // Calcul de l’ordre d’insertion
+    const insertOrder = order && Number.isInteger(order) && order > 0 ? order : line.stops.length + 1;
+
+    // Décale tous les arrêts >= à l’ordre souhaité
+    line.stops = line.stops.map(s => {
+      if (s.order >= insertOrder) {
+        return { ...s.toObject(), order: s.order + 1 };
+      }
+      return s.toObject();
+    });
+
+    // Ajoute le nouvel arrêt à la bonne position
+    line.stops.push({ stopId: newStop._id, order: insertOrder });
+
+    // Re-tri pour conserver l’ordre croissant
+    line.stops.sort((a, b) => a.order - b.order);
+
     await line.save();
 
     res.status(201).json({ message: 'Stop added to line', stop: newStop });
